@@ -3,8 +3,12 @@
 # Système de gestion du buffer d'écran
 #
 
+# Importer le script de compatibilité
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/compat.sh"
+
 # Buffer pour stocker les caractères à afficher
-declare -A SCREEN_BUFFER
+declare_A SCREEN_BUFFER
 
 # Initialiser le buffer
 function init_buffer() {
@@ -18,7 +22,7 @@ function init_buffer() {
 function clear_buffer() {
     for ((y=0; y<SCREEN_HEIGHT; y++)); do
         for ((x=0; x<SCREEN_WIDTH; x++)); do
-            SCREEN_BUFFER["$x,$y"]=" "
+            associative_set SCREEN_BUFFER "$x,$y" " "
         done
     done
 }
@@ -31,7 +35,7 @@ function draw_to_buffer() {
     
     # Vérifier que les coordonnées sont dans les limites
     if (( x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT )); then
-        SCREEN_BUFFER["$x,$y"]="$char"
+        associative_set SCREEN_BUFFER "$x,$y" "$char"
     fi
 }
 
@@ -45,7 +49,7 @@ function render_buffer() {
     for ((y=0; y<SCREEN_HEIGHT; y++)); do
         local line=""
         for ((x=0; x<SCREEN_WIDTH; x++)); do
-            line+="${SCREEN_BUFFER["$x,$y"]}"
+            line+="$(associative_get SCREEN_BUFFER "$x,$y")"
         done
         output+="$line"
         
