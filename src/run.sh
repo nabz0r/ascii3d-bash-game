@@ -67,7 +67,7 @@ if (( bash_major < 4 )); then
         
         if [[ "$use_newer" == "o" || "$use_newer" == "O" || "$use_newer" == "oui" || "$use_newer" == "Oui" ]]; then
             echo -e "${BLUE}[INFO]${NC} Lancement avec Bash $test_version..."
-            exec "$newer_bash" "src/menu.sh" "$@"
+            exec "$newer_bash" "menu.sh" "$@"
             exit 0
         fi
     else
@@ -92,15 +92,15 @@ read -r choice
 case "$choice" in
     1)
         echo -e "${GREEN}[LANCEMENT]${NC} Menu principal..."
-        ./src/menu.sh
+        ./menu.sh
         ;;
     2)
         echo -e "${GREEN}[LANCEMENT]${NC} Jeu..."
-        ./src/main.sh
+        ./main.sh
         ;;
     3)
         echo -e "${GREEN}[LANCEMENT]${NC} Éditeur de niveaux..."
-        ./src/editor.sh
+        ./editor.sh
         ;;
     q|Q)
         echo -e "${BLUE}[INFO]${NC} Au revoir !"
@@ -108,6 +108,6 @@ case "$choice" in
         ;;
     *)
         echo -e "${YELLOW}[ATTENTION]${NC} Choix invalide. Lancement du menu principal par défaut..."
-        ./src/menu.sh
+        ./menu.sh
         ;;
 esac
