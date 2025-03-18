@@ -3,6 +3,10 @@
 # Système de rendu ASCII pour le moteur 3D
 #
 
+# Importer le script de compatibilité
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/compat.sh"
+
 # Configuration du rendu
 SCREEN_WIDTH=80
 SCREEN_HEIGHT=24
@@ -12,10 +16,10 @@ Z_NEAR=0.1
 Z_FAR=100.0
 
 # Symboles de rendu ASCII par profondeur (du plus proche au plus loin)
-declare -a DEPTH_CHARS=('@' '#' '8' 'O' '=' '+' ':' '-' '.' ' ')
+DEPTH_CHARS=('@' '#' '8' 'O' '=' '+' ':' '-' '.' ' ')
 
 # Z-buffer pour stocker la profondeur de chaque pixel
-declare -A Z_BUFFER
+declare_A Z_BUFFER
 
 # Initialisation du système de rendu
 function init_render() {
@@ -29,7 +33,7 @@ function init_render() {
     # Initialiser le z-buffer
     for ((y=0; y<SCREEN_HEIGHT; y++)); do
         for ((x=0; x<SCREEN_WIDTH; x++)); do
-            Z_BUFFER["$x,$y"]=$Z_FAR
+            associative_set Z_BUFFER "$x,$y" $Z_FAR
         done
     done
     
@@ -93,9 +97,12 @@ function draw_point() {
     y=$(printf "%.0f" $y)
     
     # Test de profondeur (z-buffer)
-    if (( $(bc -l <<< "$z < ${Z_BUFFER["$x,$y"]}") )); then
+    local current_z
+    current_z=$(associative_get Z_BUFFER "$x,$y")
+    
+    if (( $(bc -l <<< "$z < $current_z") )); then
         # Mettre à jour le z-buffer
-        Z_BUFFER["$x,$y"]=$z
+        associative_set Z_BUFFER "$x,$y" "$z"
         
         # Choisir le caractère en fonction de la profondeur
         local depth_index=$(bc <<< "scale=0; (($z - $Z_NEAR) / ($Z_FAR - $Z_NEAR)) * ${#DEPTH_CHARS[@]} / 1")
@@ -314,7 +321,7 @@ function render_world() {
     # Initialiser le z-buffer pour ce frame
     for ((y=0; y<SCREEN_HEIGHT; y++)); do
         for ((x=0; x<SCREEN_WIDTH; x++)); do
-            Z_BUFFER["$x,$y"]=$Z_FAR
+            associative_set Z_BUFFER "$x,$y" $Z_FAR
         done
     done
     
