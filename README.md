@@ -1,23 +1,49 @@
 # ASCII3D-Bash-Game
 
-Un moteur de jeu 3D en ASCII implémenté entièrement en Bash pour le terminal.
+```
+    _    ____   ____ ___ ___ ____  ____  
+   / \  / ___| / ___|_ _|_ _|___ \|  _ \ 
+  / _ \ \___ \| |    | | | |  __) | | | |
+ / ___ \ ___) | |___ | | | | / __/| |_| |
+/_/   \_\____/ \____|___|___|_____|____/ 
+                                        
+ ____   _    ____  _   _    ____    _    __  __ _____ 
+| __ ) / \  / ___|| | | |  / ___|  / \  |  \/  | ____|
+|  _ \/ _ \ \___ \| |_| | | |  _  / _ \ | |\/| |  _|  
+| |_) / ___ \ ___) |  _  | | |_| |/ ___ \| |  | | |___ 
+|____/_/   \_\____/|_| |_|  \____/_/   \_\_|  |_|_____|
+```
 
-![Licence](https://img.shields.io/github/license/nabz0r/ascii3d-bash-game)
+![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Bash Version](https://img.shields.io/badge/bash-4.0%2B-orange.svg)
 
-## 📖 Description
+Un moteur de jeu 3D en ASCII implémenté entièrement en Bash pour le terminal. Explorez des donjons générés procéduralement, combattez des ennemis, interagissez avec des PNJ et tout ça sans quitter votre terminal !
 
-ASCII3D-Bash-Game est un moteur de jeu expérimental qui implémente le rendu 3D directement dans le terminal en utilisant uniquement des caractères ASCII. Le projet est écrit entièrement en Bash, sans dépendances externes autres que les utilitaires standard de Unix.
+## 📋 Table des matières
 
-## ✨ Fonctionnalités
+- [Prérequis](#prérequis)
+- [Installation](#installation)
+- [Comment jouer](#comment-jouer)
+- [Fonctionnalités](#fonctionnalités)
+- [Architecture](#architecture)
+- [Développement](#développement)
+- [Contribution](#contribution)
+- [Licence](#licence)
 
-- Rendu 3D en temps réel avec des caractères ASCII
-- Système de caméra avec perspective
-- Gestion des objets 3D (cubes, sphères, etc.)
-- Détection de collisions simple
-- Contrôles clavier intuitifs
-- Mode plein écran dans le terminal
+## 🛠️ Prérequis
 
-## 🔧 Installation
+- Bash 4.0 ou supérieur
+- Utilitaires Unix standards (`bc`, `tput`, etc.)
+- Terminal supportant les séquences d'échappement ANSI
+- Au moins 80x24 caractères de dimensions de terminal
+
+Optionnel (pour les effets sonores) :
+- `beep`, `play` (de SoX), `aplay`, ou `mpg123`
+
+## 📥 Installation
+
+### Option 1 : Cloner le dépôt
 
 ```bash
 # Cloner le dépôt
@@ -26,21 +52,57 @@ cd ascii3d-bash-game
 
 # Rendre les scripts exécutables
 chmod +x src/main.sh
+chmod +x src/menu.sh
+chmod +x src/editor.sh
 ```
 
-## 🎮 Utilisation
+### Option 2 : Installer en tant que package
 
 ```bash
-# Lancer le jeu
-./src/main.sh
+# Bientôt disponible
 ```
 
-Commandes :
-- `W`, `A`, `S`, `D` : Déplacer la caméra
-- `Q`, `E` : Monter/descendre la caméra
-- Flèches : Rotation de la caméra
-- `Espace` : Action
-- `Echap` : Quitter
+## 🎮 Comment jouer
+
+```bash
+# Lancer le menu principal
+./src/menu.sh
+
+# Ou lancer directement le jeu
+./src/main.sh
+
+# Ou lancer l'éditeur de niveaux
+./src/editor.sh
+```
+
+### Contrôles
+
+- **Déplacement** : `W` (avant), `S` (arrière), `A` (gauche), `D` (droite)
+- **Regard** : Flèches directionnelles
+- **Actions** : 
+  - `E` - Interagir (PNJ, objets)
+  - `Space` - Attaquer / Action principale
+  - `Q` - Monter
+  - `Z` - Descendre
+  - `I` - Inventaire
+  - `M` - Carte / Minimap
+  - `Tab` - Menu de quêtes
+  - `Esc` - Menu pause
+
+## ✨ Fonctionnalités
+
+- **Moteur 3D en ASCII** - Rendu 3D complet réalisé avec des caractères ASCII
+- **Exploration** - Explorez des donjons générés procéduralement ou des mondes construits manuellement
+- **Combat** - Système de combat au tour par tour avec différentes capacités
+- **Inventory** - Collectez, utilisez et équipez des objets
+- **Quêtes** - Système de quêtes avec objectifs et récompenses
+- **Dialogues** - Interactions avec des PNJ
+- **Marchands** - Achetez et vendez des objets
+- **Donjons** - Génération procédurale de donjons avec pièges, coffres et ennemis
+- **HUD** - Interface utilisateur avec informations de jeu
+- **Sauvegarde/Chargement** - Système pour sauvegarder et charger votre progression
+- **Menu** - Menu principal pour naviguer dans les fonctionnalités
+- **Éditeur** - Créez vos propres niveaux
 
 ## 🏗️ Architecture
 
@@ -48,71 +110,88 @@ Le projet est organisé selon la structure suivante :
 
 ```
 ascii3d-bash-game/
-├── src/                  # Code source
-│   ├── engine/           # Moteur de rendu et fonctionnalités de base
-│   │   ├── render.sh     # Système de rendu ASCII
-│   │   ├── camera.sh     # Gestion de la caméra
-│   │   ├── math.sh       # Opérations mathématiques 3D
-│   │   ├── input.sh      # Gestion des entrées clavier
-│   │   └── buffer.sh     # Gestion du buffer d'écran
-│   ├── game/             # Logique de jeu
-│   │   ├── entities.sh   # Définition des entités du jeu
-│   │   ├── world.sh      # Gestion du monde de jeu
-│   │   └── physics.sh    # Physique simplifié
-│   └── main.sh           # Point d'entrée du programme
-├── assets/               # Ressources
-│   └── models/           # Modèles 3D en ASCII
-└── docs/                 # Documentation supplémentaire
+├── assets/                # Ressources du jeu
+│   ├── levels/            # Niveaux pré-construits
+│   ├── models/            # Modèles 3D ASCII
+│   └── sounds/            # Effets sonores (si disponibles)
+├── config/                # Configuration du jeu
+├── docs/                  # Documentation
+├── saves/                 # Sauvegardes de jeu
+└── src/                   # Code source
+    ├── engine/            # Moteur de jeu
+    │   ├── buffer.sh      # Gestion du buffer d'écran
+    │   ├── camera.sh      # Système de caméra
+    │   ├── hud.sh         # Interface utilisateur
+    │   ├── input.sh       # Gestion des entrées
+    │   ├── math.sh        # Fonctions mathématiques
+    │   ├── optimize.sh    # Optimisations de performance
+    │   ├── render.sh      # Système de rendu
+    │   ├── sound.sh       # Système sonore
+    │   └── texture.sh     # Gestion des textures
+    ├── game/              # Logique de jeu
+    │   ├── combat.sh      # Système de combat
+    │   ├── dungeon.sh     # Générateur de donjons
+    │   ├── entities.sh    # Entités du jeu
+    │   ├── inventory.sh   # Système d'inventaire
+    │   ├── npc.sh         # Personnages non-joueurs
+    │   ├── physics.sh     # Physique simplifiée
+    │   ├── quest.sh       # Système de quêtes
+    │   ├── save.sh        # Sauvegarde/chargement
+    │   └── world.sh       # Gestion du monde
+    ├── editor.sh          # Éditeur de niveaux
+    ├── main.sh            # Point d'entrée du jeu
+    └── menu.sh            # Menu principal
 ```
 
-🛠️ Comment ça marche
+## 🚀 Développement
 
-Le moteur utilise les principes de base de l'infographie 3D :
+Le projet est en développement actif. Voici quelques fonctionnalités en cours de développement :
 
-Définition d'objets 3D avec des coordonnées dans l'espace
-Transformation de ces coordonnées (rotation, translation)
-Projection en 2D sur l'écran du terminal
-Z-buffer pour gérer la profondeur des objets
-Rendu ASCII avec différents caractères selon la profondeur et l'orientation
+- Amélioration des performances de rendu
+- Système avancé de dialogues arborescents
+- Plus de types d'ennemis et d'objets
+- Effets visuels ASCII plus sophistiqués
+- Mode multijoueur local
 
-Le tout est implémenté en Bash pur, en utilisant :
+## 🤝 Contribution
 
-Des tableaux associatifs pour stocker les données
-bc pour les calculs mathématiques
-tput pour manipuler le terminal
-Boucles d'affichage optimisées pour les performances
+Les contributions sont les bienvenues ! Voici comment vous pouvez aider :
 
-Optimisations
-Pour améliorer les performances et maintenir un framerate acceptable :
+1. **Fork** le projet
+2. Créez votre branche de fonctionnalité (`git checkout -b feature/amazing-feature`)
+3. Committez vos changements (`git commit -m 'Add some amazing feature'`)
+4. Poussez vers la branche (`git push origin feature/amazing-feature`)
+5. Ouvrez une **Pull Request**
 
-Précalcul des fonctions trigonométriques
-Utilisation de buffers pour minimiser les appels à tput
-Techniques d'occlusion pour éviter de dessiner des objets cachés
-Limites de distances de rendu
+Veuillez lire [CONTRIBUTING.md](docs/CONTRIBUTING.md) pour plus de détails sur notre code de conduite et le processus de soumission des pull requests.
 
-🤝 Contribution
-Les contributions sont les bienvenues ! Voici quelques domaines qui pourraient être améliorés :
+## 📄 Licence
 
-Optimisation des performances
-Ajout de nouveaux modèles 3D
-Amélioration du système de physique
-Implémentation d'un système de textures ASCII
-Création de niveaux et gameplay
+Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
-📄 Licence
-Ce projet est sous licence MIT - voir le fichier LICENSE pour plus de détails.
+---
 
-📚 Ressources
+Créé avec ❤️ par [nabz0r](https://github.com/nabz0r)
 
-Techniques de rendu ASCII
-Principes de base du rendu 3D
-Programmation Bash avancée
-
-📋 TODO
-
- Améliorer les performances du rendu
- Ajouter un système de textures ASCII
- Implémenter un éditeur de niveaux
- Ajouter un menu principal
- Implémenter la sauvegarde/chargement de parties
- Ajouter des effets sonores (si possible)
+```
+              .,-:;//;:=,
+          . :H@@@MM@M#H/.,+%;,
+       ,/X+ +M@@M@MM%=,-%HMMM@X/,
+     -+@MM; $M@@MH+-,;XMMMM@MMMM@+-
+    ;@M@@M- XM@X;. -+XXXXXHHH@M@M#@/.
+  ,%MM@@MH ,@%=             .---=-=:=,.
+  =@#@@@MX.,                -%HX$$%%%:;
+ =-./@M@M$                   .;@MMMM@MM:
+ X@/ -$MM/                    . +MM@@@M$
+,@M@H: :@:                    . =X#@@@@-
+,@@@MMX, .                    /H- ;@M@M=
+.H@@@@M@+,                    %MM+..%#$.
+ /MMMM@MMH/.                  XM@MH; =;
+  /%+%$XHH@$=              , .H@@@@MX,
+   .=--------.           -%H.,@@@@@MX,
+   .%MM@@@HHHXX$$$%+- .:$MMX =M@@MM%.
+     =XMMM@MM@MM#H;,-+HMM@M+ /MMMX=
+       =%@M@M#@$-.=$@MM@@@M; %M%=
+         ,:+$+-,/H#MMMMMMM@= =,
+               =++%%%%+/:-.
+```
