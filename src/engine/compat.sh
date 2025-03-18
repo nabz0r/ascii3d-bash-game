@@ -57,15 +57,6 @@ if [[ $BASH_VERSION_MAJOR -lt 4 ]]; then
         eval "unset $var_name"
     }
     
-    # Redéfinir les fonctions qui utilisent des tableaux associatifs
-    # Pour utiliser dans les scripts, remplacez:
-    # declare -A MYARRAY → declare_A MYARRAY
-    # MYARRAY["key"]="value" → associative_set MYARRAY "key" "value"
-    # echo "${MYARRAY["key"]}" → echo "$(associative_get MYARRAY "key")"
-    # if [[ -n "${MYARRAY["key"]}" ]] → if associative_exists MYARRAY "key"
-    # unset MYARRAY["key"] → associative_unset MYARRAY "key"
-    # for key in "${!MYARRAY[@]}" → for key in $(associative_keys MYARRAY)
-    
     echo "Les tableaux associatifs ont été émulés pour la compatibilité."
     echo "Certaines fonctionnalités pourraient être plus lentes."
 else
