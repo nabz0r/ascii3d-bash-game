@@ -3,6 +3,10 @@
 # Fonctions mathématiques pour les opérations 3D
 #
 
+# Importer le script de compatibilité
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/compat.sh"
+
 # Constantes mathématiques
 PI=3.14159265359
 TWO_PI=6.28318530718
@@ -10,15 +14,15 @@ HALF_PI=1.57079632679
 
 # Optimisation : pré-calculer les valeurs de sinus et cosinus
 # pour les angles les plus fréquemment utilisés (0-360 degrés)
-declare -A SIN_TABLE
-declare -A COS_TABLE
+declare_A SIN_TABLE
+declare_A COS_TABLE
 
 # Initialiser les tables de sinus et cosinus
 function init_trig_tables() {
     for ((i=0; i<360; i++)); do
         local rad=$(bc -l <<< "$i * $PI / 180")
-        SIN_TABLE[$i]=$(bc -l <<< "s($rad)")
-        COS_TABLE[$i]=$(bc -l <<< "c($rad)")
+        associative_set SIN_TABLE "$i" "$(bc -l <<< "s($rad)")"
+        associative_set COS_TABLE "$i" "$(bc -l <<< "c($rad)")"
     done
 }
 
@@ -30,8 +34,8 @@ function sin() {
     local deg=$(bc <<< "scale=0; (($angle * 180 / $PI) % 360 + 360) % 360 / 1")
     
     # Utiliser la table précalculée si disponible
-    if [[ -n "${SIN_TABLE[$deg]}" ]]; then
-        echo "${SIN_TABLE[$deg]}"
+    if associative_exists SIN_TABLE "$deg"; then
+        echo "$(associative_get SIN_TABLE "$deg")"
     else
         # Fallback sur la fonction native si l'angle n'est pas dans la table
         bc -l <<< "s($angle)"
@@ -46,8 +50,8 @@ function cos() {
     local deg=$(bc <<< "scale=0; (($angle * 180 / $PI) % 360 + 360) % 360 / 1")
     
     # Utiliser la table précalculée si disponible
-    if [[ -n "${COS_TABLE[$deg]}" ]]; then
-        echo "${COS_TABLE[$deg]}"
+    if associative_exists COS_TABLE "$deg"; then
+        echo "$(associative_get COS_TABLE "$deg")"
     else
         # Fallback sur la fonction native si l'angle n'est pas dans la table
         bc -l <<< "c($angle)"
