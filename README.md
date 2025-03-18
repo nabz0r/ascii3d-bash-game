@@ -48,29 +48,71 @@ Le projet est organisé selon la structure suivante :
 
 ```
 ascii3d-bash-game/
-├── src/              # Code source
-│   ├── engine/       # Moteur de rendu et fonctionnalités de base
-│   ├── game/         # Logique de jeu spécifique
-│   └── main.sh       # Point d'entrée du programme
-├── assets/           # Ressources (modèles 3D en ASCII, etc.)
-└── docs/             # Documentation supplémentaire
+├── src/                  # Code source
+│   ├── engine/           # Moteur de rendu et fonctionnalités de base
+│   │   ├── render.sh     # Système de rendu ASCII
+│   │   ├── camera.sh     # Gestion de la caméra
+│   │   ├── math.sh       # Opérations mathématiques 3D
+│   │   ├── input.sh      # Gestion des entrées clavier
+│   │   └── buffer.sh     # Gestion du buffer d'écran
+│   ├── game/             # Logique de jeu
+│   │   ├── entities.sh   # Définition des entités du jeu
+│   │   ├── world.sh      # Gestion du monde de jeu
+│   │   └── physics.sh    # Physique simplifié
+│   └── main.sh           # Point d'entrée du programme
+├── assets/               # Ressources
+│   └── models/           # Modèles 3D en ASCII
+└── docs/                 # Documentation supplémentaire
 ```
 
-## 🛠️ Comment ça marche
+🛠️ Comment ça marche
 
-Le moteur utilise des principes de base de l'infographie 3D :
+Le moteur utilise les principes de base de l'infographie 3D :
 
-1. Définition d'objets 3D avec des coordonnées dans l'espace
-2. Transformation de ces coordonnées (rotation, translation)
-3. Projection en 2D sur l'écran du terminal
-4. Rendu avec différents caractères ASCII selon la profondeur et l'orientation
+Définition d'objets 3D avec des coordonnées dans l'espace
+Transformation de ces coordonnées (rotation, translation)
+Projection en 2D sur l'écran du terminal
+Z-buffer pour gérer la profondeur des objets
+Rendu ASCII avec différents caractères selon la profondeur et l'orientation
 
-Le tout est implémenté en Bash pur, en utilisant des tableaux associatifs pour la gestion des données et des boucles d'affichage optimisées.
+Le tout est implémenté en Bash pur, en utilisant :
 
-## 🤝 Contribution
+Des tableaux associatifs pour stocker les données
+bc pour les calculs mathématiques
+tput pour manipuler le terminal
+Boucles d'affichage optimisées pour les performances
 
-Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou proposer une pull request.
+Optimisations
+Pour améliorer les performances et maintenir un framerate acceptable :
 
-## 📄 Licence
+Précalcul des fonctions trigonométriques
+Utilisation de buffers pour minimiser les appels à tput
+Techniques d'occlusion pour éviter de dessiner des objets cachés
+Limites de distances de rendu
 
+🤝 Contribution
+Les contributions sont les bienvenues ! Voici quelques domaines qui pourraient être améliorés :
+
+Optimisation des performances
+Ajout de nouveaux modèles 3D
+Amélioration du système de physique
+Implémentation d'un système de textures ASCII
+Création de niveaux et gameplay
+
+📄 Licence
 Ce projet est sous licence MIT - voir le fichier LICENSE pour plus de détails.
+
+📚 Ressources
+
+Techniques de rendu ASCII
+Principes de base du rendu 3D
+Programmation Bash avancée
+
+📋 TODO
+
+ Améliorer les performances du rendu
+ Ajouter un système de textures ASCII
+ Implémenter un éditeur de niveaux
+ Ajouter un menu principal
+ Implémenter la sauvegarde/chargement de parties
+ Ajouter des effets sonores (si possible)
